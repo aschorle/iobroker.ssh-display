@@ -1,16 +1,24 @@
-// This file extends the AdapterConfig type from "@iobroker/types"
-// using the actual properties present in io-package.json
-// in order to provide typings for adapter.config properties
+type DisplayMethod = 'xrandr-hdmi-1' | 'xrandr-hdmi-a-1' | 'vcgencmd' | 'custom';
 
-import { native } from '../io-package.json';
-
-type _AdapterConfig = typeof native;
+interface DisplayHostConfig {
+	id: string;
+	name: string;
+	host: string;
+	port: number;
+	username: string;
+	privateKeyPath: string;
+	displayMethod: DisplayMethod;
+	displayOnCommand?: string;
+	displayOffCommand?: string;
+}
 
 // Augment the globally declared type ioBroker.AdapterConfig
 declare global {
 	namespace ioBroker {
-		interface AdapterConfig extends _AdapterConfig {
-			// Do not enter anything here!
+		interface AdapterConfig {
+			hosts: DisplayHostConfig[];
+			option1: boolean;
+			option2: string;
 		}
 	}
 }

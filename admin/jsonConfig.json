@@ -2,25 +2,91 @@
 	"i18n": true,
 	"type": "panel",
 	"items": {
-		"option1": {
-			"type": "checkbox",
-			"label": "option1",
-			"newLine": true,
-			"xs": 12,
+		"hosts": {
+			"type": "table",
+			"label": "Hosts",
 			"sm": 12,
-			"md": 6,
-			"lg": 4,
-			"xl": 4
-		},
-		"option2": {
-			"type": "text",
-			"label": "option2",
-			"newLine": true,
-			"xs": 12,
-			"sm": 12,
-			"md": 6,
-			"lg": 4,
-			"xl": 4
+			"md": 12,
+			"lg": 12,
+			"xl": 12,
+			"items": [
+				{
+					"attr": "id",
+					"type": "text",
+					"title": "ID",
+					"width": "120px"
+				},
+				{
+					"attr": "name",
+					"type": "text",
+					"title": "Name",
+					"width": "160px"
+				},
+				{
+					"attr": "host",
+					"type": "text",
+					"title": "Host",
+					"width": "180px"
+				},
+				{
+					"attr": "port",
+					"type": "number",
+					"title": "Port",
+					"default": 22,
+					"width": "100px"
+				},
+				{
+					"attr": "username",
+					"type": "text",
+					"title": "Username",
+					"width": "160px"
+				},
+				{
+					"attr": "privateKeyPath",
+					"type": "text",
+					"title": "Private key path",
+					"width": "240px"
+				},
+				{
+					"attr": "displayMethod",
+					"type": "select",
+					"title": "Display method",
+					"default": "xrandr-hdmi-1",
+					"width": "180px",
+					"options": [
+						{
+							"label": "xrandr HDMI-1",
+							"value": "xrandr-hdmi-1"
+						},
+						{
+							"label": "xrandr HDMI-A-1",
+							"value": "xrandr-hdmi-a-1"
+						},
+						{
+							"label": "vcgencmd",
+							"value": "vcgencmd"
+						},
+						{
+							"label": "Custom",
+							"value": "custom"
+						}
+					]
+				},
+				{
+					"attr": "displayOnCommand",
+					"type": "text",
+					"title": "Display on command",
+					"hidden": "data.displayMethod !== 'custom'",
+					"width": "240px"
+				},
+				{
+					"attr": "displayOffCommand",
+					"type": "text",
+					"title": "Display off command",
+					"hidden": "data.displayMethod !== 'custom'",
+					"width": "240px"
+				}
+			]
 		}
 	}
 }
