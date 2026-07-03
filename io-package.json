@@ -1,0 +1,91 @@
+{
+	"common": {
+		"name": "ssh-display",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"uk": "Початкова версія",
+				"zh-cn": "首次出版"
+			}
+		},
+		"titleLang": {
+			"en": "SSH Display",
+			"de": "SSH-Anzeige",
+			"ru": "SSH-отображение",
+			"pt": "Exibição SSH",
+			"nl": "SSH-weergave",
+			"fr": "Affichage SSH",
+			"it": "Visualizzazione SSH",
+			"es": "Pantalla SSH",
+			"pl": "Wyświetlacz SSH",
+			"uk": "Дисплей SSH",
+			"zh-cn": "SSH 显示"
+		},
+		"desc": {
+			"en": "Control Linux displays over SSH",
+			"de": "Steuern Sie Linux-Anzeigen über SSH",
+			"ru": "Управление дисплеями Linux через SSH",
+			"pt": "Controlar exibições do Linux por SSH",
+			"nl": "Beheer Linux-schermen via SSH",
+			"fr": "Contrôler les écrans Linux via SSH",
+			"it": "Controlla i display Linux tramite SSH",
+			"es": "Controle las pantallas de Linux a través de SSH",
+			"pl": "Kontroluj wyświetlacze systemu Linux przez SSH",
+			"uk": "Керуйте дисплеями Linux через SSH",
+			"zh-cn": "通过 SSH 控制 Linux 显示"
+		},
+		"authors": [
+			"aschorle <kubus_gerbenb0i@icloud.com>"
+		],
+		"keywords": [
+			"template",
+			"automation",
+			"IoT",
+			"integration"
+		],
+		"licenseInformation": {
+			"type": "free",
+			"license": "MIT"
+		},
+		"platform": "Javascript/Node.js",
+		"icon": "ssh-display.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/aschorle/ioBroker.ssh-display/main/admin/ssh-display.png",
+		"readme": "https://github.com/aschorle/ioBroker.ssh-display/blob/main/README.md",
+		"loglevel": "info",
+		"tier": 3,
+		"mode": "daemon",
+		"type": "alarm",
+		"compact": true,
+		"connectionType": "cloud",
+		"dataSource": "poll",
+		"adminUI": {
+			"config": "json"
+		},
+		"dependencies": [
+			{
+				"js-controller": ">=6.0.11"
+			}
+		],
+		"globalDependencies": [
+			{
+				"admin": ">=7.0.23"
+			}
+		]
+	},
+	"native": {
+		"option1": true,
+		"option2": "42"
+	},
+	"objects": [],
+	"instanceObjects": []
+}
