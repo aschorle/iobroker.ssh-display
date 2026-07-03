@@ -1,4 +1,10 @@
-type DisplayMethod = 'xrandr-hdmi-1' | 'xrandr-hdmi-a-1' | 'vcgencmd' | 'custom';
+type DisplayMethod =
+	| 'xrandr-hdmi1'
+	| 'xrandr-hdmi-1'
+	| 'xrandr-hdmia1'
+	| 'xrandr-hdmi-a-1'
+	| 'vcgencmd'
+	| 'custom';
 
 interface DisplayHostConfig {
 	id: string;
@@ -7,6 +13,7 @@ interface DisplayHostConfig {
 	port: number;
 	username: string;
 	privateKeyPath: string;
+	displayType?: DisplayMethod;
 	displayMethod: DisplayMethod;
 	displayOnCommand?: string;
 	displayOffCommand?: string;
