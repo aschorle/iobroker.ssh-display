@@ -67,6 +67,24 @@
 					"width": "240px"
 				},
 				{
+					"type": "sendTo",
+					"title": "Verbindung testen",
+					"command": "testConnection",
+					"jsonData": "{\"hostId\":\"${data.id}\"}",
+					"label": "Verbindung testen",
+					"variant": "outlined",
+					"showProcess": true,
+					"width": "180px"
+				},
+				{
+					"type": "textSendTo",
+					"title": "Hostname",
+					"command": "testConnection",
+					"jsonData": "{\"hostId\":\"${data.id}\"}",
+					"container": "text",
+					"width": "220px"
+				},
+				{
 					"attr": "displayBackend",
 					"type": "select",
 					"title": "Display-Backend",
@@ -89,9 +107,27 @@
 				},
 				{
 					"attr": "displayOutput",
-					"type": "text",
+					"type": "selectSendTo",
 					"title": "Display-Ausgang",
+					"command": "detectDisplays",
+					"jsonData": "{\"hostId\":\"${data.id}\"}",
 					"default": "HDMI-1",
+					"manual": true,
+					"alsoDependsOn": [
+						"id",
+						"displayBackend"
+					],
+					"hidden": "data.displayBackend !== 'x11'",
+					"width": "220px"
+				},
+				{
+					"type": "sendTo",
+					"title": "Displays erkennen",
+					"command": "detectDisplays",
+					"jsonData": "{\"hostId\":\"${data.id}\"}",
+					"label": "Displays erkennen",
+					"variant": "outlined",
+					"showProcess": true,
 					"hidden": "data.displayBackend !== 'x11'",
 					"width": "180px"
 				},
