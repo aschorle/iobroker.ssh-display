@@ -25,7 +25,7 @@ class SshDisplay extends utils.Adapter {
 		this.on('ready', this.onReady.bind(this));
 		this.on('stateChange', this.onStateChange.bind(this));
 		// this.on('objectChange', this.onObjectChange.bind(this));
-		// this.on('message', this.onMessage.bind(this));
+		this.on('message', this.onMessage.bind(this));
 		this.on('unload', this.onUnload.bind(this));
 	}
 
@@ -83,23 +83,28 @@ class SshDisplay extends utils.Adapter {
 	async onStateChange(id, state) {
 		await this.hostManager?.onStateChange(id, state);
 	}
-	// If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
-	// /**
-	//  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-	//  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-	//  * @param {ioBroker.Message} obj
-	//  */
-	// onMessage(obj) {
-	// 	if (typeof obj === 'object' && obj.message) {
-	// 		if (obj.command === 'send') {
-	// 			// e.g. send email or pushover or whatever
-	// 			this.log.info('send command');
+	/**
+	 * @param {ioBroker.Message} obj
+	 */
+	async onMessage(obj) {
+		if (!obj || typeof obj !== 'object' || !obj.callback) {
+			return;
+		}
 
-	// 			// Send response in callback if required
-	// 			if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-	// 		}
-	// 	}
-	// }
+		let response;
+
+		if (!this.hostManager) {
+			response = { success: false, error: 'Host manager is not ready' };
+		} else if (obj.command === 'testConnection') {
+			response = await this.hostManager.testConnection(obj.message?.hostId);
+		} else if (obj.command === 'detectDisplays') {
+			response = await this.hostManager.detectDisplays(obj.message?.hostId);
+		} else {
+			response = { success: false, error: `Unsupported command: ${obj.command}` };
+		}
+
+		this.sendTo(obj.from, obj.command, response, obj.callback);
+	}
 }
 
 if (require.main !== module) {

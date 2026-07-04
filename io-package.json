@@ -66,6 +66,7 @@
 		"mode": "daemon",
 		"type": "alarm",
 		"compact": true,
+		"messagebox": true,
 		"connectionType": "cloud",
 		"dataSource": "poll",
 		"adminUI": {
