@@ -67,19 +67,15 @@
 					"width": "240px"
 				},
 				{
-					"attr": "displayMethod",
+					"attr": "displayBackend",
 					"type": "select",
-					"title": "Displaytyp",
-					"default": "xrandr-hdmi-1",
-					"width": "200px",
+					"title": "Display-Backend",
+					"default": "x11",
+					"width": "180px",
 					"options": [
 						{
-							"label": "Linux X11 - HDMI-1",
-							"value": "xrandr-hdmi-1"
-						},
-						{
-							"label": "Linux X11 - HDMI-A-1",
-							"value": "xrandr-hdmi-a-1"
+							"label": "Linux X11",
+							"value": "x11"
 						},
 						{
 							"label": "Raspberry Pi - vcgencmd",
@@ -92,17 +88,25 @@
 					]
 				},
 				{
+					"attr": "displayOutput",
+					"type": "text",
+					"title": "Display-Ausgang",
+					"default": "HDMI-1",
+					"hidden": "data.displayBackend !== 'x11'",
+					"width": "180px"
+				},
+				{
 					"attr": "displayOnCommand",
 					"type": "text",
 					"title": "Display EIN",
-					"hidden": "data.displayMethod !== 'custom'",
+					"hidden": "data.displayBackend !== 'custom'",
 					"width": "240px"
 				},
 				{
 					"attr": "displayOffCommand",
 					"type": "text",
 					"title": "Display AUS",
-					"hidden": "data.displayMethod !== 'custom'",
+					"hidden": "data.displayBackend !== 'custom'",
 					"width": "240px"
 				}
 			]

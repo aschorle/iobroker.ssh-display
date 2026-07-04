@@ -84,6 +84,8 @@
 	},
 	"native": {
 		"hosts": [],
+		"displayBackend": "x11",
+		"displayOutput": "HDMI-1",
 		"option1": true,
 		"option2": "42"
 	},

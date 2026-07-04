@@ -1,10 +1,4 @@
-type DisplayMethod =
-	| 'xrandr-hdmi1'
-	| 'xrandr-hdmi-1'
-	| 'xrandr-hdmia1'
-	| 'xrandr-hdmi-a-1'
-	| 'vcgencmd'
-	| 'custom';
+type DisplayBackend = 'x11' | 'vcgencmd' | 'custom';
 
 interface DisplayHostConfig {
 	id: string;
@@ -13,8 +7,8 @@ interface DisplayHostConfig {
 	port: number;
 	username: string;
 	privateKeyPath: string;
-	displayType?: DisplayMethod;
-	displayMethod: DisplayMethod;
+	displayBackend: DisplayBackend;
+	displayOutput?: string;
 	displayOnCommand?: string;
 	displayOffCommand?: string;
 }
@@ -24,6 +18,8 @@ declare global {
 	namespace ioBroker {
 		interface AdapterConfig {
 			hosts: DisplayHostConfig[];
+			displayBackend: DisplayBackend;
+			displayOutput: string;
 			option1: boolean;
 			option2: string;
 		}
