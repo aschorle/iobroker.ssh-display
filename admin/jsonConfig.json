@@ -29,7 +29,7 @@
 					"attr": "name",
 					"type": "text",
 					"title": "Name",
-					"width": "160px"
+					"width": "180px"
 				},
 				{
 					"attr": "host",
@@ -42,19 +42,19 @@
 					"type": "number",
 					"title": "Port",
 					"default": 22,
-					"width": "100px"
+					"width": "80px"
 				},
 				{
 					"attr": "username",
 					"type": "text",
 					"title": "Benutzer",
-					"width": "160px"
+					"width": "140px"
 				},
 				{
 					"attr": "privateKeyPath",
 					"type": "text",
 					"title": "SSH-Schl\u00fcssel",
-					"width": "240px"
+					"width": "320px"
 				},
 				{
 					"type": "sendTo",
@@ -64,22 +64,22 @@
 					"label": "Verbindung testen",
 					"variant": "outlined",
 					"showProcess": true,
-					"width": "180px"
+					"width": "160px"
 				},
 				{
-					"type": "textSendTo",
+					"attr": "_connectionHostname",
+					"type": "text",
 					"title": "Hostname",
-					"command": "testConnection",
-					"jsonData": "{\"hostId\":\"${data.id}\"}",
-					"container": "text",
-					"width": "220px"
+					"readOnly": true,
+					"doNotSave": true,
+					"width": "180px"
 				},
 				{
 					"attr": "displayBackend",
 					"type": "select",
 					"title": "Display-Backend",
 					"default": "x11",
-					"width": "180px",
+					"width": "170px",
 					"options": [
 						{
 							"label": "Linux X11",
@@ -108,7 +108,7 @@
 						"displayBackend"
 					],
 					"hidden": "data.displayBackend !== 'x11'",
-					"width": "220px"
+					"width": "180px"
 				},
 				{
 					"type": "sendTo",
@@ -120,20 +120,6 @@
 					"showProcess": true,
 					"hidden": "data.displayBackend !== 'x11'",
 					"width": "180px"
-				},
-				{
-					"attr": "displayOnCommand",
-					"type": "text",
-					"title": "Display EIN",
-					"hidden": "data.displayBackend !== 'custom'",
-					"width": "240px"
-				},
-				{
-					"attr": "displayOffCommand",
-					"type": "text",
-					"title": "Display AUS",
-					"hidden": "data.displayBackend !== 'custom'",
-					"width": "240px"
 				}
 			]
 		},
