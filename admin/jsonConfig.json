@@ -2,16 +2,6 @@
 	"i18n": true,
 	"type": "panel",
 	"items": {
-		"sshKeyHelp": {
-			"type": "staticText",
-			"label": "SSH-Schl\u00fcssel einrichten",
-			"text": "Schritt 1: SSH-Schl\u00fcssel auf dem ioBroker-System erzeugen\n\nsudo -u iobroker -H mkdir -p /home/iobroker/.ssh\nsudo -u iobroker -H ssh-keygen -t ed25519 -f /home/iobroker/.ssh/id_ed25519 -N \"\"\n\nSchritt 2: \u00d6ffentlichen Schl\u00fcssel anzeigen\n\ncat /home/iobroker/.ssh/id_ed25519.pub\n\nSchritt 3: \u00d6ffentlichen Schl\u00fcssel auf dem Zielsystem eintragen\n\nmkdir -p ~/.ssh\nnano ~/.ssh/authorized_keys\n\nSchl\u00fcssel als neue Zeile einf\u00fcgen.\n\nSchritt 4: Rechte auf dem Zielsystem setzen\n\nchmod 700 ~/.ssh\nchmod 600 ~/.ssh/authorized_keys\n\nSchritt 5: Verbindung testen\n\nsudo -u iobroker ssh -i /home/iobroker/.ssh/id_ed25519 BENUTZER@IP hostname\n\nSchritt 6: Im Adapter eintragen\n\nprivateKeyPath:\n/home/iobroker/.ssh/id_ed25519",
-			"newLine": true,
-			"sm": 12,
-			"md": 12,
-			"lg": 12,
-			"xl": 12
-		},
 		"hostsHelp": {
 			"type": "staticText",
 			"text": "Nach dem Speichern startet der Adapter neu und pr\u00fcft automatisch die SSH-Verbindung. Der Status erscheint unter Objekte -> ssh-display.0 -> hosts.",
@@ -146,6 +136,211 @@
 					"width": "240px"
 				}
 			]
+		},
+		"sshKeyHelpTitle": {
+			"type": "header",
+			"size": 3,
+			"text": "SSH-Schl\u00fcssel einrichten",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep1": {
+			"type": "header",
+			"size": 4,
+			"text": "Schritt 1",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep1Mkdir": {
+			"type": "text",
+			"label": "Befehl",
+			"text": "sudo -u iobroker -H mkdir -p /home/iobroker/.ssh",
+			"readOnly": true,
+			"copyToClipboard": true,
+			"doNotSave": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep1Keygen": {
+			"type": "text",
+			"label": "Befehl",
+			"text": "sudo -u iobroker -H ssh-keygen -t ed25519 -f /home/iobroker/.ssh/id_ed25519 -N \"\"",
+			"readOnly": true,
+			"copyToClipboard": true,
+			"doNotSave": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep2": {
+			"type": "header",
+			"size": 4,
+			"text": "Schritt 2",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep2Cat": {
+			"type": "text",
+			"label": "Befehl",
+			"text": "cat /home/iobroker/.ssh/id_ed25519.pub",
+			"readOnly": true,
+			"copyToClipboard": true,
+			"doNotSave": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep3": {
+			"type": "header",
+			"size": 4,
+			"text": "Schritt 3",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep3Mkdir": {
+			"type": "text",
+			"label": "Befehl",
+			"text": "mkdir -p ~/.ssh",
+			"readOnly": true,
+			"copyToClipboard": true,
+			"doNotSave": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep3Nano": {
+			"type": "text",
+			"label": "Befehl",
+			"text": "nano ~/.ssh/authorized_keys",
+			"readOnly": true,
+			"copyToClipboard": true,
+			"doNotSave": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep3Note": {
+			"type": "staticText",
+			"text": "Schl\u00fcssel als neue Zeile einf\u00fcgen.",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep4": {
+			"type": "header",
+			"size": 4,
+			"text": "Schritt 4",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep4Dir": {
+			"type": "text",
+			"label": "Befehl",
+			"text": "chmod 700 ~/.ssh",
+			"readOnly": true,
+			"copyToClipboard": true,
+			"doNotSave": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep4File": {
+			"type": "text",
+			"label": "Befehl",
+			"text": "chmod 600 ~/.ssh/authorized_keys",
+			"readOnly": true,
+			"copyToClipboard": true,
+			"doNotSave": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep5": {
+			"type": "header",
+			"size": 4,
+			"text": "Schritt 5",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep5Test": {
+			"type": "text",
+			"label": "Befehl",
+			"text": "sudo -u iobroker ssh -i /home/iobroker/.ssh/id_ed25519 BENUTZER@IP hostname",
+			"readOnly": true,
+			"copyToClipboard": true,
+			"doNotSave": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep6": {
+			"type": "header",
+			"size": 4,
+			"text": "Schritt 6",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep6Label": {
+			"type": "staticText",
+			"text": "privateKeyPath",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"sshKeyStep6Path": {
+			"type": "text",
+			"label": "Pfad",
+			"text": "/home/iobroker/.ssh/id_ed25519",
+			"readOnly": true,
+			"copyToClipboard": true,
+			"doNotSave": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
 		}
 	}
 }
