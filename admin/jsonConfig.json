@@ -38,88 +38,118 @@
 					"width": "180px"
 				},
 				{
-					"attr": "port",
-					"type": "number",
-					"title": "Port",
-					"default": 22,
-					"width": "80px"
-				},
-				{
 					"attr": "username",
 					"type": "text",
 					"title": "Benutzer",
 					"width": "140px"
 				},
 				{
-					"attr": "privateKeyPath",
-					"type": "text",
-					"title": "SSH-Schl\u00fcssel",
-					"width": "320px"
-				},
-				{
-					"type": "sendTo",
-					"title": "Verbindung testen",
-					"command": "testConnection",
-					"jsonData": "{\"hostId\":\"${data.id}\"}",
-					"label": "Verbindung testen",
-					"variant": "outlined",
-					"showProcess": true,
-					"width": "160px"
-				},
-				{
-					"attr": "_connectionHostname",
-					"type": "text",
-					"title": "Hostname",
-					"readOnly": true,
-					"doNotSave": true,
-					"width": "180px"
-				},
-				{
-					"attr": "displayBackend",
-					"type": "select",
-					"title": "Display-Backend",
-					"default": "x11",
-					"width": "170px",
-					"options": [
-						{
-							"label": "Linux X11",
-							"value": "x11"
+					"type": "panel",
+					"label": "Host konfigurieren",
+					"items": {
+						"privateKeyPath": {
+							"type": "text",
+							"label": "SSH-Schl\u00fcssel",
+							"newLine": true,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
 						},
-						{
-							"label": "Raspberry Pi - vcgencmd",
-							"value": "vcgencmd"
+						"displayBackend": {
+							"type": "select",
+							"label": "Display-Backend",
+							"default": "x11",
+							"newLine": true,
+							"sm": 12,
+							"md": 6,
+							"lg": 4,
+							"xl": 4,
+							"options": [
+								{
+									"label": "Linux X11",
+									"value": "x11"
+								},
+								{
+									"label": "Raspberry Pi - vcgencmd",
+									"value": "vcgencmd"
+								},
+								{
+									"label": "Benutzerdefiniert",
+									"value": "custom"
+								}
+							]
 						},
-						{
-							"label": "Benutzerdefiniert",
-							"value": "custom"
+						"displayOutput": {
+							"type": "selectSendTo",
+							"label": "Display-Ausgang",
+							"command": "detectDisplays",
+							"jsonData": "{\"hostId\":\"${data.id}\"}",
+							"default": "HDMI-1",
+							"manual": true,
+							"alsoDependsOn": [
+								"id",
+								"displayBackend"
+							],
+							"hidden": "data.displayBackend !== 'x11'",
+							"sm": 12,
+							"md": 6,
+							"lg": 4,
+							"xl": 4
+						},
+						"testConnection": {
+							"type": "sendTo",
+							"command": "testConnection",
+							"jsonData": "{\"hostId\":\"${data.id}\"}",
+							"label": "Verbindung testen",
+							"variant": "outlined",
+							"showProcess": true,
+							"newLine": true,
+							"sm": 12,
+							"md": 4,
+							"lg": 3,
+							"xl": 3
+						},
+						"connectionStatusLabel": {
+							"type": "staticText",
+							"text": "Status:",
+							"sm": 12,
+							"md": 4,
+							"lg": 3,
+							"xl": 3
+						},
+						"connectionHostnameLabel": {
+							"type": "staticText",
+							"text": "Hostname:",
+							"sm": 12,
+							"md": 4,
+							"lg": 3,
+							"xl": 3
+						},
+						"detectDisplays": {
+							"type": "sendTo",
+							"command": "detectDisplays",
+							"jsonData": "{\"hostId\":\"${data.id}\"}",
+							"label": "Displays erkennen",
+							"variant": "outlined",
+							"showProcess": true,
+							"hidden": "data.displayBackend !== 'x11'",
+							"newLine": true,
+							"sm": 12,
+							"md": 4,
+							"lg": 3,
+							"xl": 3
+						},
+						"detectedDisplaysLabel": {
+							"type": "staticText",
+							"text": "Gefundene Displays",
+							"hidden": "data.displayBackend !== 'x11'",
+							"sm": 12,
+							"md": 8,
+							"lg": 6,
+							"xl": 6
 						}
-					]
-				},
-				{
-					"attr": "displayOutput",
-					"type": "selectSendTo",
-					"title": "Display-Ausgang",
-					"command": "detectDisplays",
-					"jsonData": "{\"hostId\":\"${data.id}\"}",
-					"default": "HDMI-1",
-					"manual": true,
-					"alsoDependsOn": [
-						"id",
-						"displayBackend"
-					],
-					"hidden": "data.displayBackend !== 'x11'",
-					"width": "180px"
-				},
-				{
-					"type": "sendTo",
-					"title": "Displays erkennen",
-					"command": "detectDisplays",
-					"jsonData": "{\"hostId\":\"${data.id}\"}",
-					"label": "Displays erkennen",
-					"variant": "outlined",
-					"showProcess": true,
-					"hidden": "data.displayBackend !== 'x11'",
-					"width": "180px"
+					}
 				}
 			]
 		},
