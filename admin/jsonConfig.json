@@ -4,8 +4,17 @@
 	"items": {
 		"sshKeyHelp": {
 			"type": "staticText",
-			"label": "SSH-Schlüssel einrichten",
-			"text": "1. Schlüssel erzeugen:\nsudo -u iobroker -H mkdir -p /home/iobroker/.ssh\nsudo -u iobroker -H ssh-keygen -t ed25519 -f /home/iobroker/.ssh/id_ed25519 -N \"\"\n\n2. Öffentlichen Schlüssel anzeigen:\ncat /home/iobroker/.ssh/id_ed25519.pub\n\n3. Auf Zielsystem in ~/.ssh/authorized_keys einfügen.\n\n4. Rechte setzen:\nchmod 700 ~/.ssh\nchmod 600 ~/.ssh/authorized_keys\n\n5. Verbindung testen:\nsudo -u iobroker ssh -i /home/iobroker/.ssh/id_ed25519 BENUTZER@IP hostname\n\nprivateKeyPath im Adapter:\n/home/iobroker/.ssh/id_ed25519",
+			"label": "SSH-Schl\u00fcssel einrichten",
+			"text": "Schritt 1: SSH-Schl\u00fcssel auf dem ioBroker-System erzeugen\n\nsudo -u iobroker -H mkdir -p /home/iobroker/.ssh\nsudo -u iobroker -H ssh-keygen -t ed25519 -f /home/iobroker/.ssh/id_ed25519 -N \"\"\n\nSchritt 2: \u00d6ffentlichen Schl\u00fcssel anzeigen\n\ncat /home/iobroker/.ssh/id_ed25519.pub\n\nSchritt 3: \u00d6ffentlichen Schl\u00fcssel auf dem Zielsystem eintragen\n\nmkdir -p ~/.ssh\nnano ~/.ssh/authorized_keys\n\nSchl\u00fcssel als neue Zeile einf\u00fcgen.\n\nSchritt 4: Rechte auf dem Zielsystem setzen\n\nchmod 700 ~/.ssh\nchmod 600 ~/.ssh/authorized_keys\n\nSchritt 5: Verbindung testen\n\nsudo -u iobroker ssh -i /home/iobroker/.ssh/id_ed25519 BENUTZER@IP hostname\n\nSchritt 6: Im Adapter eintragen\n\nprivateKeyPath:\n/home/iobroker/.ssh/id_ed25519",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"hostsHelp": {
+			"type": "staticText",
+			"text": "Nach dem Speichern startet der Adapter neu und pr\u00fcft automatisch die SSH-Verbindung. Der Status erscheint unter Objekte -> ssh-display.0 -> hosts.",
 			"newLine": true,
 			"sm": 12,
 			"md": 12,
@@ -35,7 +44,7 @@
 				{
 					"attr": "host",
 					"type": "text",
-					"title": "Host",
+					"title": "Server / IP",
 					"width": "180px"
 				},
 				{
@@ -48,36 +57,36 @@
 				{
 					"attr": "username",
 					"type": "text",
-					"title": "Username",
+					"title": "Benutzer",
 					"width": "160px"
 				},
 				{
 					"attr": "privateKeyPath",
 					"type": "text",
-					"title": "Private key path",
+					"title": "SSH-Schl\u00fcssel",
 					"width": "240px"
 				},
 				{
 					"attr": "displayMethod",
 					"type": "select",
-					"title": "Display method",
+					"title": "Displaytyp",
 					"default": "xrandr-hdmi-1",
-					"width": "180px",
+					"width": "200px",
 					"options": [
 						{
-							"label": "xrandr HDMI-1",
+							"label": "Linux X11 - HDMI-1",
 							"value": "xrandr-hdmi-1"
 						},
 						{
-							"label": "xrandr HDMI-A-1",
+							"label": "Linux X11 - HDMI-A-1",
 							"value": "xrandr-hdmi-a-1"
 						},
 						{
-							"label": "vcgencmd",
+							"label": "Raspberry Pi - vcgencmd",
 							"value": "vcgencmd"
 						},
 						{
-							"label": "Custom",
+							"label": "Benutzerdefiniert",
 							"value": "custom"
 						}
 					]
@@ -85,14 +94,14 @@
 				{
 					"attr": "displayOnCommand",
 					"type": "text",
-					"title": "Display on command",
+					"title": "Display EIN",
 					"hidden": "data.displayMethod !== 'custom'",
 					"width": "240px"
 				},
 				{
 					"attr": "displayOffCommand",
 					"type": "text",
-					"title": "Display off command",
+					"title": "Display AUS",
 					"hidden": "data.displayMethod !== 'custom'",
 					"width": "240px"
 				}
