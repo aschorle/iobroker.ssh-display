@@ -14,6 +14,105 @@
 
 Control Linux displays over SSH
 
+## SSH-Schlüssel einrichten
+
+Diese Schritte richten einen SSH-Schlüssel ein, den der Adapter für die Verbindung zu den Zielsystemen verwenden kann.
+
+### 1. Prüfen, welcher Benutzer ioBroker ausführt
+
+```bash
+systemctl status iobroker
+```
+
+Standard ist meistens der Benutzer `iobroker`.
+
+### 2. Home-Verzeichnis des ioBroker-Benutzers prüfen
+
+```bash
+sudo -u iobroker -H bash -c "echo \$HOME"
+```
+
+### 3. SSH-Schlüssel erzeugen
+
+```bash
+sudo -u iobroker -H mkdir -p /home/iobroker/.ssh
+sudo -u iobroker -H ssh-keygen -t ed25519 -f /home/iobroker/.ssh/id_ed25519 -N ""
+```
+
+### 4. Öffentlichen Schlüssel anzeigen
+
+```bash
+cat /home/iobroker/.ssh/id_ed25519.pub
+```
+
+### 5. Öffentlichen Schlüssel auf Zielsystem eintragen
+
+Auf dem Zielsystem als Zielbenutzer:
+
+```bash
+mkdir -p ~/.ssh
+nano ~/.ssh/authorized_keys
+```
+
+Den öffentlichen Schlüssel als neue Zeile einfügen.
+
+### 6. Rechte auf dem Zielsystem setzen
+
+```bash
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+```
+
+### 7. Verbindung vom ioBroker-System testen
+
+```bash
+sudo -u iobroker ssh -i /home/iobroker/.ssh/id_ed25519 BENUTZER@IP hostname
+```
+
+Beispiel:
+
+```bash
+sudo -u iobroker ssh -i /home/iobroker/.ssh/id_ed25519 aschorle@192.168.1.166 hostname
+```
+
+### 8. Adapter-Konfiguration
+
+`privateKeyPath`:
+
+```text
+/home/iobroker/.ssh/id_ed25519
+```
+
+`username`:
+
+```text
+Der Linux-Benutzer auf dem Zielsystem
+```
+
+`host`:
+
+```text
+IP-Adresse oder Hostname des Zielsystems
+```
+
+### Fehlerbehebung
+
+`No such file or directory`
+
+Der angegebene `privateKeyPath` existiert nicht oder der ioBroker-Benutzer kann die Datei nicht lesen. Prüfen Sie Pfad, Benutzer und Home-Verzeichnis.
+
+`Permission denied`
+
+Der Zielbenutzer, der Schlüssel oder die Rechte auf dem Zielsystem passen nicht. Prüfen Sie `~/.ssh`, `authorized_keys` und die Dateirechte.
+
+`All configured authentication methods failed`
+
+Der private Schlüssel passt nicht zum öffentlichen Schlüssel in `authorized_keys`, oder der falsche Benutzer wird verwendet.
+
+`Host key verification failed`
+
+Der Host-Key des Zielsystems ist dem ioBroker-Benutzer noch nicht bekannt oder hat sich geändert. Testen Sie die Verbindung einmal manuell als ioBroker-Benutzer und prüfen Sie `known_hosts`.
+
 ## Developer manual
 This section is intended for the developer. It can be deleted later.
 

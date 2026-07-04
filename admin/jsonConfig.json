@@ -2,6 +2,16 @@
 	"i18n": true,
 	"type": "panel",
 	"items": {
+		"sshKeyHelp": {
+			"type": "staticText",
+			"label": "SSH-Schlüssel einrichten",
+			"text": "1. Schlüssel erzeugen:\nsudo -u iobroker -H mkdir -p /home/iobroker/.ssh\nsudo -u iobroker -H ssh-keygen -t ed25519 -f /home/iobroker/.ssh/id_ed25519 -N \"\"\n\n2. Öffentlichen Schlüssel anzeigen:\ncat /home/iobroker/.ssh/id_ed25519.pub\n\n3. Auf Zielsystem in ~/.ssh/authorized_keys einfügen.\n\n4. Rechte setzen:\nchmod 700 ~/.ssh\nchmod 600 ~/.ssh/authorized_keys\n\n5. Verbindung testen:\nsudo -u iobroker ssh -i /home/iobroker/.ssh/id_ed25519 BENUTZER@IP hostname\n\nprivateKeyPath im Adapter:\n/home/iobroker/.ssh/id_ed25519",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
 		"hosts": {
 			"type": "table",
 			"label": "Hosts",
