@@ -96,9 +96,9 @@ class SshDisplay extends utils.Adapter {
 		if (!this.hostManager) {
 			response = { success: false, error: 'Host manager is not ready' };
 		} else if (obj.command === 'testConnection') {
-			response = await this.hostManager.testConnection(obj.message?.hostId);
+			response = await this.hostManager.testConnection(obj.message?.host);
 		} else if (obj.command === 'detectDisplays') {
-			response = await this.hostManager.detectDisplays(obj.message?.hostId);
+			response = await this.hostManager.detectDisplays(obj.message?.host);
 		} else {
 			response = { success: false, error: `Unsupported command: ${obj.command}` };
 		}

@@ -84,7 +84,7 @@
 							"type": "selectSendTo",
 							"label": "Display-Ausgang",
 							"command": "detectDisplays",
-							"jsonData": "{\"hostId\":\"${data.id}\"}",
+							"jsonData": "{\"host\":{\"id\":\"${data.id}\",\"host\":\"${data.host}\",\"port\":\"${data.port}\",\"username\":\"${data.username}\",\"privateKeyPath\":\"${data.privateKeyPath}\",\"displayBackend\":\"${data.displayBackend}\",\"displayOutput\":\"${data.displayOutput}\"}}",
 							"default": "HDMI-1",
 							"manual": true,
 							"alsoDependsOn": [
@@ -100,7 +100,7 @@
 						"testConnection": {
 							"type": "sendTo",
 							"command": "testConnection",
-							"jsonData": "{\"hostId\":\"${data.id}\"}",
+							"jsonData": "{\"host\":{\"id\":\"${data.id}\",\"host\":\"${data.host}\",\"port\":\"${data.port}\",\"username\":\"${data.username}\",\"privateKeyPath\":\"${data.privateKeyPath}\",\"displayBackend\":\"${data.displayBackend}\",\"displayOutput\":\"${data.displayOutput}\"}}",
 							"label": "Verbindung testen",
 							"variant": "outlined",
 							"showProcess": true,
@@ -129,7 +129,7 @@
 						"detectDisplays": {
 							"type": "sendTo",
 							"command": "detectDisplays",
-							"jsonData": "{\"hostId\":\"${data.id}\"}",
+							"jsonData": "{\"host\":{\"id\":\"${data.id}\",\"host\":\"${data.host}\",\"port\":\"${data.port}\",\"username\":\"${data.username}\",\"privateKeyPath\":\"${data.privateKeyPath}\",\"displayBackend\":\"${data.displayBackend}\",\"displayOutput\":\"${data.displayOutput}\"}}",
 							"label": "Displays erkennen",
 							"variant": "outlined",
 							"showProcess": true,
