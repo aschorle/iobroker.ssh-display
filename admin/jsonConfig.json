@@ -49,7 +49,8 @@
 					"items": {
 						"privateKeyPath": {
 							"type": "text",
-							"label": "SSH-Schl\u00fcssel",
+							"label": "SSH-Schl\u00fcsselpfad (auf dem ioBroker-Server)",
+							"default": "/home/iobroker/.ssh/id_ed25519",
 							"newLine": true,
 							"sm": 12,
 							"md": 12,
@@ -153,10 +154,69 @@
 				}
 			]
 		},
-		"sshKeyStep1": {
+		"sshKeyStatus": {
+			"type": "textSendTo",
+			"label": "Status",
+			"command": "getSshKeyStatus",
+			"newLine": true,
+			"sm": 12,
+			"md": 6,
+			"lg": 6,
+			"xl": 6
+		},
+		"firstHostTitle": {
+			"type": "header",
+			"size": 4,
+			"text": "Erster Host",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"generateSshKey": {
+			"type": "sendTo",
+			"command": "generateSshKey",
+			"label": "1. SSH-Schl\u00fcssel erzeugen",
+			"variant": "outlined",
+			"showProcess": true,
+			"result": {
+				"SSH-Schl\u00fcssel wurde erzeugt": "SSH-Schl\u00fcssel wurde erzeugt",
+				"SSH-Schl\u00fcssel ist bereits vorhanden": "SSH-Schl\u00fcssel ist bereits vorhanden"
+			},
+			"newLine": true,
+			"sm": 12,
+			"md": 6,
+			"lg": 4,
+			"xl": 4
+		},
+		"showPublicKey": {
+			"type": "sendTo",
+			"command": "getPublicKey",
+			"label": "2. Public Key anzeigen",
+			"variant": "outlined",
+			"showProcess": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 6,
+			"lg": 4,
+			"xl": 4
+		},
+		"publicKey": {
+			"type": "textSendTo",
+			"label": "Public Key",
+			"command": "getPublicKey",
+			"copyToClipboard": true,
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"firstHostAuthorizedKeys": {
 			"type": "text",
-			"label": "Schritt 1 \u2013 SSH-Verzeichnis",
-			"default": "sudo -u iobroker -H mkdir -p /home/iobroker/.ssh",
+			"label": "3. Auf dem Zielgerät: Public Key einfügen",
+			"default": "nano ~/.ssh/authorized_keys",
 			"readOnly": true,
 			"copyToClipboard": true,
 			"doNotSave": true,
@@ -166,45 +226,29 @@
 			"lg": 12,
 			"xl": 12
 		},
-		"sshKeyStep2": {
-			"type": "text",
-			"label": "Schritt 2 \u2013 Schl\u00fcssel erzeugen",
-			"default": "sudo -u iobroker -H ssh-keygen -t ed25519 -f /home/iobroker/.ssh/id_ed25519 -N \"\"",
-			"readOnly": true,
-			"copyToClipboard": true,
-			"doNotSave": true,
-			"newLine": true,
-			"sm": 12,
-			"md": 12,
-			"lg": 12,
-			"xl": 12
-		},
-		"sshKeyStep3": {
-			"type": "text",
-			"label": "Schritt 3 \u2013 Public Key anzeigen",
-			"default": "cat /home/iobroker/.ssh/id_ed25519.pub",
-			"readOnly": true,
-			"copyToClipboard": true,
-			"doNotSave": true,
-			"newLine": true,
-			"sm": 12,
-			"md": 12,
-			"lg": 12,
-			"xl": 12
-		},
-		"sshKeyStep4": {
+		"firstHostTest": {
 			"type": "staticText",
-			"text": "Schritt 4 \u2013 Public Key auf dem Zielsystem in ~/.ssh/authorized_keys einf\u00fcgen",
+			"text": "4. Verbindung im jeweiligen Host testen",
 			"newLine": true,
 			"sm": 12,
 			"md": 12,
 			"lg": 12,
 			"xl": 12
 		},
-		"sshKeyStep5": {
+		"additionalHostsTitle": {
+			"type": "header",
+			"size": 4,
+			"text": "Weitere Hosts",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"additionalHostsAuthorizedKeys": {
 			"type": "text",
-			"label": "Schritt 5 \u2013 Verbindung testen",
-			"default": "sudo -u iobroker ssh -i /home/iobroker/.ssh/id_ed25519 <BENUTZER>@<HOST> hostname",
+			"label": "Denselben Public Key einfügen",
+			"default": "nano ~/.ssh/authorized_keys",
 			"readOnly": true,
 			"copyToClipboard": true,
 			"doNotSave": true,
@@ -214,13 +258,9 @@
 			"lg": 12,
 			"xl": 12
 		},
-		"sshKeyStep6": {
-			"type": "text",
-			"label": "Schritt 6 \u2013 Adapter: privateKeyPath",
-			"default": "/home/iobroker/.ssh/id_ed25519",
-			"readOnly": true,
-			"copyToClipboard": true,
-			"doNotSave": true,
+		"additionalHostsTest": {
+			"type": "staticText",
+			"text": "Danach Verbindung im jeweiligen Host testen",
 			"newLine": true,
 			"sm": 12,
 			"md": 12,

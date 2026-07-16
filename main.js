@@ -8,6 +8,7 @@
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 const { HostManager } = require('./lib/hostManager');
+const { SSHKeyManager } = require('./lib/sshKeyManager');
 
 // Load your modules here, e.g.:
 // const fs = require('fs');
@@ -22,6 +23,7 @@ class SshDisplay extends utils.Adapter {
 			name: 'ssh-display',
 		});
 		this.hostManager = null;
+		this.sshKeyManager = new SSHKeyManager();
 		this.on('ready', this.onReady.bind(this));
 		this.on('stateChange', this.onStateChange.bind(this));
 		// this.on('objectChange', this.onObjectChange.bind(this));
@@ -93,7 +95,26 @@ class SshDisplay extends utils.Adapter {
 
 		let response;
 
-		if (!this.hostManager) {
+		if (obj.command === 'getSshKeyStatus') {
+			const exists = await this.sshKeyManager.exists();
+			response = exists ? '✓ SSH-Schlüssel vorhanden' : '⚠ Kein SSH-Schlüssel vorhanden';
+		} else if (obj.command === 'generateSshKey') {
+			try {
+				const result = await this.sshKeyManager.generate();
+				response = {
+					success: true,
+					result: result.created ? 'SSH-Schlüssel wurde erzeugt' : 'SSH-Schlüssel ist bereits vorhanden',
+				};
+			} catch (error) {
+				response = { success: false, error: error.message };
+			}
+		} else if (obj.command === 'getPublicKey') {
+			try {
+				response = await this.sshKeyManager.getPublicKey();
+			} catch (error) {
+				response = `Public Key nicht verfügbar: ${error.message}`;
+			}
+		} else if (!this.hostManager) {
 			response = { success: false, error: 'Host manager is not ready' };
 		} else if (obj.command === 'testConnection') {
 			response = await this.hostManager.testConnection(obj.message?.host);
