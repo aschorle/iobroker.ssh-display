@@ -22,7 +22,7 @@
 				{
 					"attr": "id",
 					"type": "text",
-					"title": "ID",
+					"title": "ID (nach dem ersten Speichern nicht mehr ändern)",
 					"width": "120px"
 				},
 				{
@@ -44,6 +44,20 @@
 					"width": "140px"
 				},
 				{
+					"attr": "privateKeyPath",
+					"type": "text",
+					"default": "/home/iobroker/.ssh/id_ed25519",
+					"hidden": true,
+					"width": "0px"
+				},
+				{
+					"attr": "displayOutput",
+					"type": "text",
+					"default": "HDMI-1",
+					"hidden": true,
+					"width": "0px"
+				},
+				{
 					"type": "panel",
 					"label": "Host konfigurieren",
 					"items": {
@@ -63,9 +77,9 @@
 							"default": "x11",
 							"newLine": true,
 							"sm": 12,
-							"md": 6,
-							"lg": 4,
-							"xl": 4,
+							"md": 12,
+							"lg": 12,
+							"xl": 12,
 							"options": [
 								{
 									"label": "Linux X11",
@@ -82,21 +96,25 @@
 							]
 						},
 						"displayOutput": {
-							"type": "selectSendTo",
+							"type": "text",
 							"label": "Display-Ausgang",
-							"command": "detectDisplays",
-							"jsonData": "{\"host\":{\"id\":\"${data.id}\",\"host\":\"${data.host}\",\"port\":\"${data.port}\",\"username\":\"${data.username}\",\"privateKeyPath\":\"${data.privateKeyPath}\",\"displayBackend\":\"${data.displayBackend}\",\"displayOutput\":\"${data.displayOutput}\"}}",
 							"default": "HDMI-1",
-							"manual": true,
-							"alsoDependsOn": [
-								"id",
-								"displayBackend"
-							],
 							"hidden": "data.displayBackend !== 'x11'",
+							"newLine": true,
 							"sm": 12,
-							"md": 6,
-							"lg": 4,
-							"xl": 4
+							"md": 12,
+							"lg": 12,
+							"xl": 12
+						},
+						"displayOutputHint": {
+							"type": "staticText",
+							"text": "Standard: HDMI-1. Mit 'Displays erkennen' kann der tatsächliche Display-Ausgang ermittelt werden.",
+							"hidden": "data.displayBackend !== 'x11'",
+							"newLine": true,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
 						},
 						"testConnection": {
 							"type": "sendTo",
@@ -107,25 +125,12 @@
 							"showProcess": true,
 							"newLine": true,
 							"sm": 12,
-							"md": 4,
-							"lg": 3,
-							"xl": 3
-						},
-						"connectionStatusLabel": {
-							"type": "staticText",
-							"text": "Status:",
-							"sm": 12,
-							"md": 4,
-							"lg": 3,
-							"xl": 3
-						},
-						"connectionHostnameLabel": {
-							"type": "staticText",
-							"text": "Hostname:",
-							"sm": 12,
-							"md": 4,
-							"lg": 3,
-							"xl": 3
+							"md": 6,
+							"lg": 4,
+							"xl": 3,
+							"controlStyle": {
+								"maxWidth": "260px"
+							}
 						},
 						"detectDisplays": {
 							"type": "sendTo",
@@ -137,37 +142,32 @@
 							"hidden": "data.displayBackend !== 'x11'",
 							"newLine": true,
 							"sm": 12,
-							"md": 4,
-							"lg": 3,
-							"xl": 3
-						},
-						"detectedDisplaysLabel": {
-							"type": "staticText",
-							"text": "Gefundene Displays",
-							"hidden": "data.displayBackend !== 'x11'",
-							"sm": 12,
-							"md": 8,
-							"lg": 6,
-							"xl": 6
+							"md": 6,
+							"lg": 4,
+							"xl": 3,
+							"controlStyle": {
+								"maxWidth": "260px"
+							}
 						}
 					}
 				}
 			]
 		},
-		"sshKeyStatus": {
-			"type": "textSendTo",
+		"_sshKeyStatus": {
+			"type": "text",
 			"label": "Status",
-			"command": "getSshKeyStatus",
+			"readOnly": true,
+			"doNotSave": true,
+			"defaultSendTo": "getSshKeyStatus",
 			"newLine": true,
 			"sm": 12,
 			"md": 6,
 			"lg": 6,
 			"xl": 6
 		},
-		"firstHostTitle": {
-			"type": "header",
-			"size": 4,
-			"text": "Erster Host",
+		"reuseSshKeyHint": {
+			"type": "staticText",
+			"text": "Wenn bereits ein SSH-Schlüssel vorhanden ist, diesen weiterverwenden.",
 			"newLine": true,
 			"sm": 12,
 			"md": 12,
@@ -180,6 +180,7 @@
 			"label": "1. SSH-Schl\u00fcssel erzeugen",
 			"variant": "outlined",
 			"showProcess": true,
+			"useNative": true,
 			"result": {
 				"SSH-Schl\u00fcssel wurde erzeugt": "SSH-Schl\u00fcssel wurde erzeugt",
 				"SSH-Schl\u00fcssel ist bereits vorhanden": "SSH-Schl\u00fcssel ist bereits vorhanden"
@@ -190,23 +191,41 @@
 			"lg": 4,
 			"xl": 4
 		},
+		"sshKeyActionsHint": {
+			"type": "staticText",
+			"text": "SSH-Schl\u00fcsselaktionen werden sofort auf dem ioBroker-Server ausgef\u00fchrt. Ein Speichern der Instanzkonfiguration ist daf\u00fcr nicht erforderlich.",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12,
+			"style": {
+				"fontWeight": 500,
+				"marginTop": 8,
+				"marginBottom": 8
+			}
+		},
 		"showPublicKey": {
 			"type": "sendTo",
 			"command": "getPublicKey",
 			"label": "2. Public Key anzeigen",
 			"variant": "outlined",
 			"showProcess": true,
+			"useNative": true,
 			"newLine": true,
 			"sm": 12,
 			"md": 6,
 			"lg": 4,
 			"xl": 4
 		},
-		"publicKey": {
-			"type": "textSendTo",
+		"_publicKey": {
+			"type": "text",
 			"label": "Public Key",
-			"command": "getPublicKey",
+			"readOnly": true,
+			"doNotSave": true,
 			"copyToClipboard": true,
+			"minRows": 2,
+			"maxRows": 4,
 			"newLine": true,
 			"sm": 12,
 			"md": 12,
@@ -226,41 +245,45 @@
 			"lg": 12,
 			"xl": 12
 		},
+		"firstHostAuthorizedKeysNote": {
+			"type": "staticText",
+			"text": "Public Key als neue Zeile einfügen und speichern.",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
 		"firstHostTest": {
 			"type": "staticText",
-			"text": "4. Verbindung im jeweiligen Host testen",
+			"text": "4. Host anlegen",
 			"newLine": true,
 			"sm": 12,
 			"md": 12,
 			"lg": 12,
 			"xl": 12
 		},
-		"additionalHostsTitle": {
-			"type": "header",
-			"size": 4,
-			"text": "Weitere Hosts",
-			"newLine": true,
-			"sm": 12,
-			"md": 12,
-			"lg": 12,
-			"xl": 12
-		},
-		"additionalHostsAuthorizedKeys": {
-			"type": "text",
-			"label": "Denselben Public Key einfügen",
-			"default": "nano ~/.ssh/authorized_keys",
-			"readOnly": true,
-			"copyToClipboard": true,
-			"doNotSave": true,
-			"newLine": true,
-			"sm": 12,
-			"md": 12,
-			"lg": 12,
-			"xl": 12
-		},
-		"additionalHostsTest": {
+		"instructionTestConnection": {
 			"type": "staticText",
-			"text": "Danach Verbindung im jeweiligen Host testen",
+			"text": "5. Verbindung testen",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"instructionDetectDisplays": {
+			"type": "staticText",
+			"text": "6. Displays erkennen",
+			"newLine": true,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
+		},
+		"instructionSelectDisplay": {
+			"type": "staticText",
+			"text": "7. Display-Ausgang auswählen",
 			"newLine": true,
 			"sm": 12,
 			"md": 12,

@@ -8,6 +8,7 @@
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 const { HostManager } = require('./lib/hostManager');
+const { normalizeAndPersistHostConfig } = require('./lib/hostConfig');
 const { SSHKeyManager } = require('./lib/sshKeyManager');
 
 // Load your modules here, e.g.:
@@ -35,6 +36,7 @@ class SshDisplay extends utils.Adapter {
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
+		await normalizeAndPersistHostConfig(this);
 		this.hostManager = new HostManager(this);
 		await this.hostManager.start();
 	}
@@ -96,30 +98,45 @@ class SshDisplay extends utils.Adapter {
 		let response;
 
 		if (obj.command === 'getSshKeyStatus') {
-			const exists = await this.sshKeyManager.exists();
-			response = exists ? '✓ SSH-Schlüssel vorhanden' : '⚠ Kein SSH-Schlüssel vorhanden';
+			try {
+				const exists = await this.sshKeyManager.exists();
+				response = exists ? 'SSH-Schlüssel vorhanden' : 'Kein SSH-Schlüssel vorhanden';
+			} catch {
+				response = 'SSH-Schlüsselstatus konnte nicht ermittelt werden';
+			}
 		} else if (obj.command === 'generateSshKey') {
 			try {
 				const result = await this.sshKeyManager.generate();
+				const publicKey = await this.sshKeyManager.getPublicKey();
 				response = {
 					success: true,
 					result: result.created ? 'SSH-Schlüssel wurde erzeugt' : 'SSH-Schlüssel ist bereits vorhanden',
+					native: {
+						_sshKeyStatus: '✓ SSH-Schlüssel vorhanden',
+						_publicKey: publicKey,
+					},
 				};
 			} catch (error) {
 				response = { success: false, error: error.message };
 			}
 		} else if (obj.command === 'getPublicKey') {
 			try {
-				response = await this.sshKeyManager.getPublicKey();
+				response = {
+					native: { _publicKey: await this.sshKeyManager.getPublicKey() },
+				};
 			} catch (error) {
-				response = `Public Key nicht verfügbar: ${error.message}`;
+				response = { native: { _publicKey: `Public Key nicht verfügbar: ${error.message}` } };
 			}
 		} else if (!this.hostManager) {
 			response = { success: false, error: 'Host manager is not ready' };
 		} else if (obj.command === 'testConnection') {
-			response = await this.hostManager.testConnection(obj.message?.host);
+			const result = await this.hostManager.testConnection(obj.message?.host);
+			response = {
+				result: result.success ? `Verbunden: ${result.hostname}` : 'Verbindung fehlgeschlagen',
+			};
 		} else if (obj.command === 'detectDisplays') {
-			response = await this.hostManager.detectDisplays(obj.message?.host);
+			const result = await this.hostManager.detectDisplays(obj.message?.host);
+			response = { result: result.success ? result.displays.join(', ') || 'Keine Displays gefunden' : 'Keine Displays gefunden' };
 		} else {
 			response = { success: false, error: `Unsupported command: ${obj.command}` };
 		}
