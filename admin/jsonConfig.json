@@ -82,6 +82,10 @@
 							"xl": 12,
 							"options": [
 								{
+									"label": "Automatisch (vcgencmd, ddcutil, X11, benutzerdefiniert)",
+									"value": "auto"
+								},
+								{
 									"label": "Linux X11",
 									"value": "x11"
 								},
@@ -98,6 +102,26 @@
 									"value": "custom"
 								}
 							]
+						},
+						"automaticBackendHint": {
+							"type": "staticText",
+							"text": "Automatische Auswahl: ddcutil wird nur gewählt, wenn es auf dem entfernten Linux-Host bereits installiert ist und ein kompatibles Display mit D6 erkannt wird. Der Adapter installiert keine Pakete und führt niemals sudo aus. Der SSH-Benutzer muss ddcutil ohne sudo und ohne interaktive Passwortabfrage ausführen können. Empfohlen ist root mit SSH-Schlüssel und deaktivierter Passwortanmeldung; alternativ ist ein Benutzer mit Zugriff auf /dev/i2c-* möglich.",
+							"hidden": "data.displayBackend !== 'auto'",
+							"newLine": true,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
+						},
+						"ddcutilBackendHint": {
+							"type": "staticText",
+							"text": "Voraussetzung: ddcutil muss auf dem Zielhost installiert sein. Der konfigurierte SSH-Benutzer muss ddcutil ohne sudo und ohne Passwortabfrage ausführen können und Zugriff auf /dev/i2c-* haben. Empfohlen: root per SSH-Schlüssel bei deaktivierter Passwortanmeldung. Der Adapter installiert nichts und führt niemals sudo aus.",
+							"hidden": "data.displayBackend !== 'ddcutil'",
+							"newLine": true,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
 						},
 						"displayOutput": {
 							"type": "text",

@@ -16,23 +16,62 @@ Control Linux displays over SSH
 
 ### Display backends
 
-The adapter supports X11 (`xrandr`), Raspberry Pi (`vcgencmd`), custom commands, and DDC/CI (`ddcutil`).
-For the `ddcutil` backend, install `ddcutil` on the remote host and ensure that the configured SSH user can access
-the monitor's DDC/CI interface. Detection requires a connected monitor whose capabilities include VCP feature `D6`
-(Power mode). The backend maps power values `0x01` to on and `0x04` to off; other values are reported as unknown.
-
-At startup, the adapter selects the first available backend in this order:
+The adapter supports X11 (`xrandr`), Raspberry Pi (`vcgencmd`), custom commands, and DDC/CI (`ddcutil`). Existing
+backend selections remain explicit. When `Automatic` is selected, the adapter checks each backend once at startup
+and uses the first available backend in this order:
 
 1. `vcgencmd`
-2. `ddcutil` when a monitor is detected and VCP feature `D6` is supported
+2. `ddcutil` when a compatible monitor with VCP feature `D6` is detected
 3. `xset` (the existing X11 display control)
-4. Custom commands as fallback
+4. Configured custom commands as fallback
 
-On Debian and Ubuntu, install the required DDC/CI utility on the remote host with:
+An explicitly selected backend does not silently fall back to another backend if its detection fails.
+
+### ddcutil remote-host setup
+
+`ddcutil` must already be installed on every remote host that uses this backend. The adapter does not install remote
+packages and never executes `sudo`. On Debian, Ubuntu, Raspberry Pi OS, and Armbian, install it administratively on
+the remote host:
 
 ```bash
-apt install ddcutil
+apt update
+apt install -y ddcutil
 ```
+
+Run all verification commands as the exact SSH user configured in the adapter:
+
+```bash
+ddcutil detect
+ddcutil getvcp D6
+ddcutil setvcp D6 5
+ddcutil setvcp D6 1
+```
+
+That user must be able to run these commands without `sudo` and without an interactive password prompt. The
+recommended setup is root login authenticated only with an SSH key, with password login disabled and OpenSSH
+configured with `PermitRootLogin prohibit-password` (called `without-password` by some older OpenSSH versions).
+A non-root user is also supported when it has the appropriate read/write permissions for the required `/dev/i2c-*`
+devices.
+
+A typical permissions failure is:
+
+```text
+Device /dev/i2c-* is not readable and writable
+EACCES(13): Permission denied
+```
+
+Resolve this either by using the SSH-key-only root setup described above or by granting the configured non-root SSH
+user the appropriate I2C device permissions. Do not configure the adapter to invoke `sudo`.
+
+Not every monitor implements DDC/CI, and some DDC/CI monitors do not support VCP feature `D6` (Power mode). Such a
+monitor cannot be controlled by this backend. Power values `0x01` and `0x04` are reported as on and off respectively;
+all other values are treated as unknown.
+
+### Security model
+
+The adapter supports SSH private-key authentication only. Display state values are booleans and are never interpreted
+as shell commands. Built-in backend commands are generated internally; no password authentication or automatic
+privilege escalation is used. Private-key contents are never written to the log.
 
 ## SSH-Schlüssel einrichten
 
