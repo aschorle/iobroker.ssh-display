@@ -1,4 +1,4 @@
-type DisplayBackend = 'x11' | 'vcgencmd' | 'custom';
+type DisplayBackend = 'x11' | 'vcgencmd' | 'ddcutil' | 'custom';
 
 interface DisplayHostConfig {
 	id: string;

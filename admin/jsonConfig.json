@@ -90,6 +90,10 @@
 									"value": "vcgencmd"
 								},
 								{
+									"label": "DDC/CI - ddcutil",
+									"value": "ddcutil"
+								},
+								{
 									"label": "Benutzerdefiniert",
 									"value": "custom"
 								}

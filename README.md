@@ -14,6 +14,26 @@
 
 Control Linux displays over SSH
 
+### Display backends
+
+The adapter supports X11 (`xrandr`), Raspberry Pi (`vcgencmd`), custom commands, and DDC/CI (`ddcutil`).
+For the `ddcutil` backend, install `ddcutil` on the remote host and ensure that the configured SSH user can access
+the monitor's DDC/CI interface. Detection requires a connected monitor whose capabilities include VCP feature `D6`
+(Power mode). The backend maps power values `0x01` to on and `0x04` to off; other values are reported as unknown.
+
+At startup, the adapter selects the first available backend in this order:
+
+1. `vcgencmd`
+2. `ddcutil` when a monitor is detected and VCP feature `D6` is supported
+3. `xset` (the existing X11 display control)
+4. Custom commands as fallback
+
+On Debian and Ubuntu, install the required DDC/CI utility on the remote host with:
+
+```bash
+apt install ddcutil
+```
+
 ## SSH-Schlüssel einrichten
 
 Diese Schritte richten einen SSH-Schlüssel ein, den der Adapter für die Verbindung zu den Zielsystemen verwenden kann.
